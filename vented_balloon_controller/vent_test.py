@@ -11,8 +11,8 @@ except serial.SerialException as e:
   print(f"Error connecting to Arduino: {e}")
   arduino = None
 
-initial_ascent_rate = 5 # m/s 
-deceleration_rate = 0.02 # m/s^2, the deceleration of the balloon during venting
+initial_ascent_rate = 6 # m/s 
+deceleration_rate = 0.0167 # m/s^2, the deceleration of the balloon during venting
 altitude = 0 # starting altitude in meters
 
 vent_open = False
