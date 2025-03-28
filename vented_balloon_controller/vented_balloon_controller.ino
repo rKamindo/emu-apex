@@ -67,8 +67,9 @@ bool floatTimerStarted = false;  // flag to indicate if float timer has started
 bool floatComplete = false;
 bool ventOpen = false;           // current state of the vent (open/closed)
 
-FlightState currentState = FAST_ASCENT;  // current flight state, initialized to float
-FlightState proposedState =
+// current flight state, initialized to fast ascent, test what happens when this is set to FLOAT
+FlightState currentState = FAST_ASCENT;  
+FlightState lastProposedState =
     FAST_ASCENT;  // proposed flight state based on recent measurements
 
 float previousAltitude = 0;  // last recorded altitude measurement
@@ -168,7 +169,7 @@ FlightState proposeState(float ascentRate) {
 void updateFlightState(float ascentRate) {
   FlightState newProposedState = proposeState(ascentRate);
 
-  if (newProposedState == proposedState) {
+  if (newProposedState == lastProposedState) {
     consecutiveStateAgreements++;
     if (consecutiveStateAgreements >= REQUIRED_AGREEMENTS &&
         newProposedState != currentState) {
@@ -181,7 +182,7 @@ void updateFlightState(float ascentRate) {
       Serial.println(currentState);
     }
   } else {
-    proposedState = newProposedState;
+    lastProposedState = newProposedState;
     consecutiveStateAgreements =
         1;  // reset to 1 as this state differs from the previous state, serving
             // as the first agreement
