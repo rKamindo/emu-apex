@@ -33,7 +33,7 @@ def update_ascent_rate(time_elapsed):
 # calculate the altitude change since last altitude request
 # uses displacement equation
 def calculate_altitude_change(time_elapsed):
-  global last_ascent_rate, current_ascent_rate, deceleration_rate
+  global last_ascent_rate, deceleration_rate
   
   v0 = last_ascent_rate
 
