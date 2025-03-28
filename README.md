@@ -34,7 +34,7 @@ Many parameters in the Python and Arduino codes can be tuned to adjust the behav
 1. (SKIP if you don't have Git) Clone the repository:
 
    ```
-   git clone https://github.com/your-repo/vented-balloon-controller.git
+   git clone https://github.com/rkamindo/emu-apex/vented-balloon-controller.git
    cd vented-balloon-controller
    ```
 
