@@ -2,7 +2,7 @@ import serial
 import time
 
 # Arduino Communication
-arduino_port = 'COM4'
+arduino_port = 'COM9'
 
 try:
   arduino = serial.Serial(port=arduino_port, baudrate=9600, timeout=.1)
@@ -11,8 +11,8 @@ except serial.SerialException as e:
   print(f"Error connecting to Arduino: {e}")
   arduino = None
 
-initial_ascent_rate = 6.0 # m/s 
-deceleration_rate = 0.0167 # m/s^2, the deceleration of the balloon during venting
+initial_ascent_rate = 5 # m/s 
+deceleration_rate = 0.02 # m/s^2, the deceleration of the balloon during venting
 altitude = 0 # starting altitude in meters
 
 vent_open = False
@@ -31,13 +31,19 @@ def update_ascent_rate(time_elapsed):
   print(f"Current ascent rate: {current_ascent_rate:.2f}, Vent open time: {vent_open_time:2f}")
     
 # calculate the altitude change since last altitude request
-# uses trapezoidal rule integration
-def calculate_altitude_change(last_ascent_rate, current_ascent_rate, time_elapsed):
-  altitude_change = 0.5 * (last_ascent_rate + current_ascent_rate) * time_elapsed
+# uses displacement equation
+def calculate_altitude_change(time_elapsed):
+  global last_ascent_rate, current_ascent_rate, deceleration_rate
+  
+  v0 = last_ascent_rate
+
+  a = -deceleration_rate
+
+  altitude_change = v0 * time_elapsed + 0.5 * a * time_elapsed**2
   return altitude_change
 
-def get_altitude():
-  global last_ascent_rate, current_ascent_rate, last_request_time
+def measure_altitude():
+  global altitude, last_ascent_rate, current_ascent_rate, last_request_time
   current_time = time.time()
   if last_request_time is not None:
     time_elapsed = current_time - last_request_time
@@ -46,22 +52,21 @@ def get_altitude():
     last_ascent_rate = current_ascent_rate
 
     # update ascent rate
-    current_ascent_rate = update_ascent_rate(time_elapsed)
+    update_ascent_rate(time_elapsed)
 
     # calculate altitude change
-    altitude_change = calculate_altitude_change(last_ascent_rate, current_ascent_rate, time_elapsed)
+    altitude_change = calculate_altitude_change(time_elapsed)
 
     # update altitude
     altitude += altitude_change
   
   last_request_time = current_time
-  return altitude
 
-def send_altitude_to_arduino(altitude):
+def send_altitude_to_arduino():
   if arduino: # only send if the connection is succesful
     try:
       data_string = f"{altitude:2f}\n" # format data as string
-      arduino.write(data_string) # encode and send
+      arduino.write(data_string.encode()) # encode and send
       print(f"Sent to Arduino: {data_string.strip()}")
     except serial.SerialException as e:
       print(f"Error sending data to Arduino: {e}")
@@ -79,19 +84,20 @@ def close_vent():
   print(f"Vent was open for {vent_open_time:.2f}")
 
 if __name__ == "__main__":  
+  print("Python program started")
   while True:
     if arduino and arduino.in_waiting > 0:
       try:
         command = arduino.readline().decode('utf-8').strip()
         print(f"Received command from Arduino: {command}")
 
-        if command == "OPEN_VENT":
+        if command == "VENT_OPEN":
           open_vent()
-        elif command == "CLOSE_VENT":
+        elif command == "VENT_CLOSE":
           close_vent()
         elif command == "REQUEST_ALTITUDE":
-          altitude = get_altitude()
-          send_altitude_to_arduino(altitude)
+          measure_altitude()
+          send_altitude_to_arduino()
         else:
           print(f"Unknown command from Arduino: {command}")
       except serial.SerialException as e:
