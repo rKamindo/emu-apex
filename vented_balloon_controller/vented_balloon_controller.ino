@@ -45,9 +45,9 @@ const uint8_t VENT_SERVO_PIN =
 
 // vent position constants
 const int VENT_CLOSED_POSITION =
-    0;  // servo angle for closed vent (adjust as needed)
+    180;  // servo angle for closed vent (adjust as needed)
 const int VENT_OPEN_POSITION =
-    90;  // servo angle for open vent (adjust as needed)
+    0;  // servo angle for open vent (adjust as needed)
 
 // possible ascent rate states
 enum FlightState {
@@ -90,7 +90,8 @@ void updateFlightState(float ascentRate);
 
 void setup() {
   Serial.begin(9600);
-  ventServo.attach(9);
+  ventServo.attach(9, 1000, 2000);
+  ventServo.write(VENT_CLOSED_POSITION);
 
   if (!TEST_MODE) {
     unsigned bme_status = bme.begin();
@@ -202,6 +203,7 @@ void closeVent() {
 }
 
 void loop() {
+
   static unsigned long lastTimeAltitudeMeasured =
       millis();  // timestamp of last altitude measurement
   static unsigned long lastTimeStateProposed = millis();
