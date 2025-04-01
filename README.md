@@ -58,7 +58,10 @@ Many parameters in the Python and Arduino codes can be tuned to adjust the behav
 
 5.  Install com0com and create a pair of virtual COM ports (e.g., COM9 and COM10).
 
-6.  Open the Arduino sketch (`vented_balloon_controller.ino`) in the Arduino IDE
+    <img width="336" alt="com0com" src="https://github.com/user-attachments/assets/7dd78769-2f04-4944-b7ca-3084dd03b462" />
+
+
+7.  Open the Arduino sketch (`vented_balloon_controller.ino`) in the Arduino IDE
     - Ensure `TEST_MODE` is set to `true` and save the file.
     - Extract and compile (Go to Sketch > Extract Compiled Binary). The compiled binary will be in a newly created build folder in the project.
 
