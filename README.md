@@ -108,18 +108,6 @@ Many parameters in the Python and Arduino codes can be tuned to adjust the behav
 
 ## Notes
 
-- The Python script simulates the balloon's behavior, including ascent rate, altitude changes, venting
-- The Arduino program controls the vent based on the simulated data it receives.
-- Pay attention to the state transitions and vent control commands in the Arduino serial monitor output.
-
-## Troubleshooting
-
-- If you encounter connection issues, double-check that the COM ports match in both the Python script and SimulIDE.
-- Ensure that `TEST_MODE` is set to `true` in the Arduino sketch.
-- If the Python script fails to start, verify that you've installed `pyserial`.
-
-## Notes
-
 - The Python script simulates the balloon's behavior, including ascent rate and altitude changes.
 - The Arduino program controls the vent based on the simulated data it receives.
 - Pay attention to the state transitions and vent control commands in the output.
