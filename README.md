@@ -1,3 +1,6 @@
+The logic implemented in this code is based on the methods described in the paper:  
+[Development of a Flexible Vent for Latex Weather Ballooning](https://www.iastatedigitalpress.com/ahac/article/id/15638/) published in the *Academic High Altitude Conference*.
+
 # Vented Balloon Controller Testing Guide
 
 This guide outlines the process for testing a weather balloon's ascent control system using an Arduino program and a Python-based altitude simulator. It demonstrates how the controller manages vent operations and flight states in a simulated environment.
