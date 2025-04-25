@@ -7,7 +7,7 @@ __pycache__/
 libraries/
 
 # venv
-.vented_balloon_controller/venv_test_venv/
+vented_balloon_controller/vent_test_venv/
 
 # C extensions
 *.so
