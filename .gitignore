@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Arduino IDE files
+libraries/
+
 # venv
 .vented_balloon_controller/venv_test_venv/
 
