@@ -2,13 +2,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # load data
-df = pd.read_csv('flow-sensor.csv')
-
-print(list(df.columns))
+df = pd.read_csv('data/flow-sensor.csv')
 
 df['Time_s'] = df['Time'] / 1000.0 # convert milliseconds to seconds
 
-# conversion function, approximate linear fits for the two regions of
+# convert voltage to SLPM
+# it should be adjusted based on the actual calibration data
 def convert_to_slpm(voltage):
     if voltage > 120.2:
         return (voltage - 129.2) / -9
